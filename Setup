@@ -1,0 +1,52 @@
+Install Raspbian via NOOBS installer [https://www.raspberrypi.org/downloads/noobs/]
+
+Configure Raspbian System
+
+Go through initial setup (wifi, etc), change default password
+
+Open Terminal
+
+sudo raspi-config
+
+5 -> Interfacing Options
+Enable VNC
+Enable SSH
+(also enabled spi, i2c, may need them in the futrue)
+
+
+Local System:
+Install RealVNC Viewer
+
+Can now configure remotely.
+
+
+
+sudo apt install gedit
+
+sudo apt install libftdi-dev
+sudo pip3 install pylibftdi
+sudo pip3 install pi_sht1x
+
+https://pylibftdi.readthedocs.io/en/0.15.0/installation.html
+
+
+
+
+
+Wiring:
+
+USB Relay: FTDI (when facing) Left: NC, Center: VCC, Right: NOOBS
+
+SHT1xx: 
+
+
+Dev Environment:
+VSCode
+libftdi-dev
+Python3
+pip3
+    pylibftdi
+    pi_sht1x
+ssh client
+scp client
+vnc client
