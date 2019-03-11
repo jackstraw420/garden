@@ -10,8 +10,8 @@ logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s')
 from pylibftdi import BitBangDevice
 
 def setFTDIDeviceData(value):
-    if True:
-        return
+    #if True:
+    #    return
     with BitBangDevice() as ftdiDevice:
         ftdiDevice.baudrate=921600
         ftdiDevice.write(value)
