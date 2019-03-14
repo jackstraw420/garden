@@ -1,3 +1,6 @@
+"""
+Module for controlling electronic relays
+"""
 
 import logging
 from logging.handlers import RotatingFileHandler
@@ -90,27 +93,36 @@ class RelayRule:
             return lastOpen >= obj
         if predicate == "LESS_OR_EQUAL":
             return lastOpen <= obj
-        pass
+        return False
 
     def checkHumidity(self, relay, predicate, obj):
-        humidity = SHTSensor.getHumidity()
-        if humidity is None:
+        try:
+            humidity = SHTSensor.getReading()["humidity"]
+            if humidity is None:
+                return False
+            if predicate == "GREATER_OR_EQUAL":
+                return humidity >= obj
+            if predicate == "LESS_OR_EQUAL":
+                return humidity <= obj
+        except:
+            logger.error("Relay: Error reading SHT1x sensor", exc_info=True)
+        finally:
             return False
-        if predicate == "GREATER_OR_EQUAL":
-            return humidity >= obj
-        if predicate == "LESS_OR_EQUAL":
-            return humidity <= obj
-        pass
     
     def checkTemperature(self, relay, predicate, obj):
-        temperature = SHTSensor.getTemperature()
-        if temperature is None:
+        try:
+            temperature = SHTSensor.getReading()["temperature"]
+            if temperature is None:
+                return False
+            if predicate == "GREATER_OR_EQUAL":
+                return temperature >= obj
+            if predicate == "LESS_OR_EQUAL":
+                return temperature <= obj
+        except:
+            logger.error("Relay: Error reading SHT1x sensor", exc_info=True)
+        finally:
             return False
-        if predicate == "GREATER_OR_EQUAL":
-            return temperature >= obj
-        if predicate == "LESS_OR_EQUAL":
-            return temperature <= obj
-        pass
+        
         
 class Relay:
     def __init__(self, id, rules, duration):
@@ -198,3 +210,7 @@ def createRelays(config):
 def configUpdate():
     createRelays(Configuration.getConfig())
     logger.debug('Config Update')
+
+if __name__ == "__main__":
+    #TODO: test code
+    pass

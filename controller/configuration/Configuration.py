@@ -23,24 +23,43 @@ global lastVersion
 lastVersion = "--"
 
 ####### Member Functions #######
-"""
-Initialize the configuration. Reads from local file, then from server if available.
-"""
+
 def initialize():
+    """
+    Initialize the configuration. Reads from local file, then from server if available.
+    """
     logger.debug("Initializing..")
     readConfigFile()
     readServerConfig()
 
 def registerListener(listener):
+    """
+    Register a configuration listener
+
+    :param listener: Object with a configUpdate() function that can take zero arguments
+    :return: returns nothing
+    """
     listeners.append(listener)
 
 def readConfigFile(filename = configFilename):
+    """
+    Reads the configuration file and loads it into memory.
+
+    :param filename: Configuration filename (probably just /etc/garden.conf)
+    :return: returns nothing
+    """
     global config
     logger.debug('readConfigFile: Opening configuration file %(file)s' % {'file': configFilename})
     with open(filename) as configFile:
         config = json.load(configFile)
 
 def writeConfigFile(filename = configFilename): 
+    """
+    Writes the configuration to file
+
+    :param filename: Configuration filename (probably just /etc/garden.conf)
+    :return: returns nothing
+    """
     global config
     lastVersion = config["version"]
     logger.debug('writeConfigFile: Opening configuration file %(file)s' % {'file': configFilename})
@@ -49,10 +68,11 @@ def writeConfigFile(filename = configFilename):
     with open(filename, 'w') as configFile:
         json.dump(config, configFile, indent=4)
 
-"""
-Read the configuration from the server. If it is new and marked override, save it to file.
-"""
+
 def readServerConfig():
+    """
+    Read the configuration from the server. If it is new and marked override, save it to file.
+    """
     global config
     if config is not None:
         if "server" in config.keys():
@@ -71,8 +91,13 @@ def readServerConfig():
     logger.debug('readServerConfig: No server config available.')
 
 def getConfig():
+    """
+    Get the configuration data
+    :return: returns the global configuration variable
+    """
     global configs
     return config
 
 if __name__ == "__main__":
+    #TODO: test code
     pass
