@@ -1,3 +1,7 @@
+"""
+Main controller. Initializes relay, config check daemons.
+"""
+
 
 ####### Logging #######
 import logging
@@ -21,18 +25,30 @@ configDelay = 60 # check configuration updates every minute
 
 ####### Daemon Methods #######
 async def configurationLoop():
+    """
+    Configuration loop function
+    """
     global configDelay
     while True:
         print("config loop")
         await asyncio.sleep(configDelay)
 
 async def relayLoop():
+    """
+    Relay state check loop function
+    """
     global relayDelay
     while True:
-        Relay.checkRelays()
+        try:
+            Relay.checkRelays()
+        except:
+            logger.error("Main: uncaught exception", exc_info=True)
         await asyncio.sleep(relayDelay)
 
 def initializeLoops():
+    """
+    Initialize the daemon loops.
+    """
     loop = asyncio.get_event_loop()
     try:
         asyncio.ensure_future(configurationLoop())
